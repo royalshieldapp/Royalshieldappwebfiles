@@ -1,14 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#04080F" />
-    <meta name="description" content="Royal Shield Web App - secure dashboard for cybersecurity tools." />
-    <title>Royal Shield Web App</title>
+    <!--
+      This index file is a simple Progressive Web App (PWA) entry point for
+      Royal Shield.  It includes the primary manifest and service worker
+      registrations and pulls in the external embed content from the
+      original royalshield.app site.  The embed URL is hosted on
+      googleusercontent.com and provides the interactive charts, video
+      hero and other interactive components used on the original page.
+    -->
+    <!-- Facebook domain verification from the original site -->
+    <meta name="facebook-domain-verification" content="4mar64kj4ecob6sik3ma9ajafhk98d" />
+    <title>Royal Shield Web App</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0b0b0f" />
+    <style>
+      /* Basic styling to ensure the iframe fills the screen */
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: #000;
+      }
+      .embed-container {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+      .embed-container iframe {
+        border: none;
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="embed-container">
+      <!--
+        The original Google Sites page uses a number of custom embed
+        components.  Each of those components is hosted in a single
+        "inner-frame-minified.html" file on googleusercontent.com.  By
+        loading that page inside an iframe here, we bring across all of
+        the interactive charts, hero sections and other embeds without
+        duplicating the entire HTML.  If you wish to break out the
+        individual components, you can extract the data-code attributes
+        from the original site and embed them separately.  For a
+        lightweight web‑app, embedding the single inner frame is
+        sufficient.
+      -->
+      <iframe
+        src="https://1323166449-atari-embeds.googleusercontent.com/embeds/16cb204cf3a9d4d223a0a3fd8b0eec5d/inner-frame-minified.html"
+        allow="fullscreen"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <script>
+      // Register the service worker for offline caching when supported
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>
